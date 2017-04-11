@@ -30,7 +30,10 @@ ADD https://bin.equinox.io/c/ekMN3bCZFUn/forego-stable-linux-amd64.tgz /forego.t
 RUN cd /usr/local/bin && tar xfz /forego.tgz && chmod +x /usr/local/bin/forego && rm /forego.tgz
 
 # Add bootstrap script, ceph defaults key/values for KV store
-ADD *.sh ceph.defaults check_zombie_mons.py ./osd_scenarios/* /
+ADD *.sh ceph.defaults check_zombie_mons.py ./osd_scenarios/* entrypoint.sh.in disabled_scenario /
+
+# Modify the entrypoint
+RUN chmod +x /generate_entrypoint.sh && bash -c "/generate_entrypoint.sh"
 
 # Add templates for confd
 ADD ./confd/templates/* /etc/confd/templates/

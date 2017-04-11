@@ -42,7 +42,10 @@ ADD https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 /usr/loca
 RUN chmod +x /usr/local/bin/jq
 
 # Add bootstrap script, ceph defaults key/values for KV store
-ADD *.sh ceph.defaults check_zombie_mons.py ./osd_scenarios/* /
+ADD *.sh ceph.defaults check_zombie_mons.py ./osd_scenarios/* entrypoint.sh.in disabled_scenario /
+
+# Modify the entrypoint
+RUN chmod +x /generate_entrypoint.sh && bash -c "/generate_entrypoint.sh"
 
 # Add templates for confd
 ADD ./confd/templates/* /etc/confd/templates/
